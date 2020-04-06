@@ -12,6 +12,9 @@ import com.example.allegrointernapp.R
 import com.example.allegrointernapp.data.Offers
 import com.example.allegrointernapp.viewmodels.ShopViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
 
@@ -27,17 +30,29 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
 
         val asyncViewModelData = shopViewModel.getAllOffersLiveData()
         asyncViewModelData.observe(this, Observer {
+            Log.d("TAG", "Wykonano kod wewnątrz Observe")
             val adapter = OffersAdapter(it, this)
             recyclerView.adapter = adapter
+            swipeRefreshLayout.isRefreshing = false
         })
 
+        /**
+         * Swipe to refresh data and set refreshing icon
+         */
+        /*
+        swipeRefreshLayout.setOnRefreshListener {
+            shopViewModel.refreshData()
+            swipeRefreshLayout.isRefreshing = true
+        }
+
+         */
     }
 
     /**
      * Open DetailActivity and send offer data via Intent.putParcelable
      */
     override fun onItemClick(position: Int) {
-        val offer = shopViewModel.getAllOffersLiveData().value!!.offers[position]
+        val offer = shopViewModel.getAllOffersLiveData().value!![position]
         val intent = Intent(applicationContext, DetailActivity::class.java)
         intent.putExtra("offerDetails", offer)
         startActivity(intent)

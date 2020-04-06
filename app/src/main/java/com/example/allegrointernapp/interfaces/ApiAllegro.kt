@@ -12,7 +12,8 @@ interface ApiAllegro {
     //https://private-987cdf-allegromobileinterntest.apiary-mock.com/allegro/offers
 
     @GET("offers")
-    fun getAllOffersAsync():Deferred<Offers>
+    fun getAllOffersAsync(): Deferred<Offers>
+
     companion object{
         operator fun invoke(): ApiAllegro {
             return Retrofit.Builder()

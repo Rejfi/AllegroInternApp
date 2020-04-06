@@ -8,10 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.allegrointernapp.R
+import com.example.allegrointernapp.data.Offer
 import com.example.allegrointernapp.data.Offers
 import com.squareup.picasso.Picasso
 
-class OffersAdapter(private val allOffers: Offers,
+class OffersAdapter(private val allOffers: List<Offer>,
                     private val onOfferClickListener: OnOfferClickListener
 ): RecyclerView.Adapter<OffersViewHolder>() {
 
@@ -23,16 +24,16 @@ class OffersAdapter(private val allOffers: Offers,
     }
 
     override fun getItemCount(): Int {
-        return allOffers.offers.size
+        return allOffers.size
     }
 
     override fun onBindViewHolder(holder: OffersViewHolder, position: Int) {
 
-        holder.img.contentDescription = allOffers.offers[position].thumbnailUrl
-        holder.title.text = allOffers.offers[position].name
-        holder.price.text = allOffers.offers[position].price.amount
+        holder.img.contentDescription = allOffers[position].thumbnailUrl
+        holder.title.text = allOffers[position].name
+        holder.price.text = allOffers[position].price.amount
 
-        Picasso.get().load(allOffers.offers[position].thumbnailUrl)
+        Picasso.get().load(allOffers[position].thumbnailUrl)
             .resize(300,300)
             .centerInside()
             .into(holder.img)
