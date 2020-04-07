@@ -69,12 +69,11 @@ class DetailActivity : AppCompatActivity() {
             }
 
         }
-    TODO("Ogarnąć parsowanie HTML aby wyświetlało w przystępnej formie znacznki odpowiednie")
-    TODO("WAŻNE Zabezpieczyć Retrofit przed błędem w pobieraniu danych będzie trzeba przebudować przepływ")
+        /*
+        TODO("Ogarnąć parsowanie HTML aby wyświetlało w przystępnej formie znacznki odpowiednie")
     TODO("Przygotować layout dla wszystkich orientacji urządzenia")
-    TODO("Zaimplementować odświeżanie oferty")
     TODO("Wprowadzić wyszukiwanie w ActionBar")
-
+        */
     }
 
 }

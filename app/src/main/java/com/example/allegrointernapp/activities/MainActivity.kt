@@ -11,6 +11,7 @@ import com.example.allegrointernapp.adapters.OffersAdapter
 import com.example.allegrointernapp.R
 import com.example.allegrointernapp.data.Offers
 import com.example.allegrointernapp.viewmodels.ShopViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,28 +25,36 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        shopViewModel = ViewModelProvider(this).get(ShopViewModel::class.java)
+        shopViewModel = ViewModelProvider(this)[(ShopViewModel(application)::class.java)]
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
 
+        val snackbar =  Snackbar.make(recyclerView,"No connectivity available. Turn on internet",Snackbar.LENGTH_INDEFINITE)
+            .setAction("Retry") {
+                shopViewModel.refreshData()
+            }
 
         val asyncViewModelData = shopViewModel.getAllOffersLiveData()
+
         asyncViewModelData.observe(this, Observer {
-            Log.d("TAG", "Wykonano kod wewnątrz Observe")
-            val adapter = OffersAdapter(it, this)
-            recyclerView.adapter = adapter
-            swipeRefreshLayout.isRefreshing = false
+            if(it.isNullOrEmpty()){
+                snackbar.show()
+                swipeRefreshLayout.isRefreshing = false
+
+            }else {
+                val adapter = OffersAdapter(it, this)
+                recyclerView.adapter = adapter
+                swipeRefreshLayout.isRefreshing = false
+                snackbar.dismiss()
+            }
         })
 
         /**
-         * Swipe to refresh data and set refreshing icon
+         * Swipe to refresh data and set refreshing icon till completed network request
          */
-        /*
         swipeRefreshLayout.setOnRefreshListener {
             shopViewModel.refreshData()
-            swipeRefreshLayout.isRefreshing = true
         }
 
-         */
     }
 
     /**

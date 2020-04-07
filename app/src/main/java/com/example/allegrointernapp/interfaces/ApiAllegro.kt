@@ -1,22 +1,30 @@
 package com.example.allegrointernapp.interfaces
 
 import com.example.allegrointernapp.data.Offers
+import com.example.allegrointernapp.network.ConnectivityInterceptor
+import com.example.allegrointernapp.network.ConnectivityInterceptorImpl
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiAllegro {
 
-    //https://private-987cdf-allegromobileinterntest.apiary-mock.com/allegro/offers
-
     @GET("offers")
     fun getAllOffersAsync(): Deferred<Offers>
 
     companion object{
-        operator fun invoke(): ApiAllegro {
+        //Override invoke method to call Api short way
+        operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): ApiAllegro {
+
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(connectivityInterceptor)
+                .build()
+
             return Retrofit.Builder()
+                .client(okHttpClient)
                 .baseUrl("https://private-987cdf-allegromobileinterntest.apiary-mock.com/allegro/")
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
