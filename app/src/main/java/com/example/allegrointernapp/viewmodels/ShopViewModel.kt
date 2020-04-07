@@ -3,10 +3,7 @@ package com.example.allegrointernapp.viewmodels
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.allegrointernapp.data.Offer
 import com.example.allegrointernapp.data.ShopRepository
 import com.example.allegrointernapp.data.Offers
@@ -18,7 +15,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.emptyFlow
 
 class ShopViewModel(app: Application): AndroidViewModel(app){
-    private val repository = ShopRepository(app)
+   // private val repository = ShopRepository(app)
     private val allOffersLiveData = MutableLiveData<List<Offer>>()
 
     init {
@@ -29,20 +26,19 @@ class ShopViewModel(app: Application): AndroidViewModel(app){
         return allOffersLiveData
     }
 
-    private fun setOffers() = runBlocking{
-       // val offers = repository.getAllOffersAsync().await().offers
-        val api = ApiAllegro(ConnectivityInterceptorImpl(getApplication()))
-        val offers = try {
-            api.getAllOffersAsync().await().offers
-
-        }catch (e: NoConnectivityException){
-            Log.d("Connectivity", e.message, e)
-            emptyList<Offer>()
-        }
-        allOffersLiveData.value = offers
+    private fun setOffers() = CoroutineScope(viewModelScope.coroutineContext).launch{
+            // val offers = repository.getAllOffersAsync().await().offers
+            val api = ApiAllegro(ConnectivityInterceptorImpl(getApplication()))
+            val offers = try {
+                api.getAllOffersAsync().await().offers
+            }catch (e: NoConnectivityException){
+                Log.e("Connectivity", e.message, e)
+                emptyList<Offer>()
+            }
+            allOffersLiveData.value = offers
                 .filter{ it.price.amount.toDouble() in 50.0..1000.0 }
                 .sortedBy { it.price.amount.toDouble()
-            }
+                }
     }
 
     fun refreshData(){

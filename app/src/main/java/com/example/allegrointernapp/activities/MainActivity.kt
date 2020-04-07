@@ -26,27 +26,31 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
         setContentView(R.layout.activity_main)
 
         shopViewModel = ViewModelProvider(this)[(ShopViewModel(application)::class.java)]
-        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
 
-        val snackbar =  Snackbar.make(recyclerView,"No connectivity available. Turn on internet",Snackbar.LENGTH_INDEFINITE)
-            .setAction("Retry") {
-                shopViewModel.refreshData()
+
+        val snackbar =  Snackbar.make(
+            swipeRefreshLayout,
+            "No connectivity available. Turn on internet",
+            Snackbar.LENGTH_INDEFINITE)
+                .setAction("Retry") {
+                    shopViewModel.refreshData()
             }
 
-        val asyncViewModelData = shopViewModel.getAllOffersLiveData()
+            val asyncViewModelData = shopViewModel.getAllOffersLiveData()
 
-        asyncViewModelData.observe(this, Observer {
+            asyncViewModelData.observe(this, Observer {
             if(it.isNullOrEmpty()){
                 snackbar.show()
                 swipeRefreshLayout.isRefreshing = false
 
             }else {
+                recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                 val adapter = OffersAdapter(it, this)
                 recyclerView.adapter = adapter
                 swipeRefreshLayout.isRefreshing = false
                 snackbar.dismiss()
-            }
-        })
+                }
+            })
 
         /**
          * Swipe to refresh data and set refreshing icon till completed network request
