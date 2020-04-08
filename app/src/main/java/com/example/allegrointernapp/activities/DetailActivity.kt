@@ -22,6 +22,7 @@ import java.lang.Exception
 
 class DetailActivity : AppCompatActivity() {
 
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -36,7 +37,7 @@ class DetailActivity : AppCompatActivity() {
             }
             title = offer.name
             val totalPrice = "${offer.price.amount}  ${offer.price.currency}"
-            detailPrice.text = totalPrice
+            detailPriceFrag.text = totalPrice
             prepareHtml(offer.description)
         }
 
@@ -69,12 +70,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
         }
-        /*
-        TODO("Ogarnąć parsowanie HTML aby wyświetlało w przystępnej formie znacznki odpowiednie")
-    TODO("Przygotować layout dla wszystkich orientacji urządzenia")
-    TODO("Wprowadzić wyszukiwanie w ActionBar")
-        */
     }
-
+*/
 }
 

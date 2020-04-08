@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.allegrointernapp.adapters.OffersAdapter
 import com.example.allegrointernapp.R
 import com.example.allegrointernapp.data.Offers
+import com.example.allegrointernapp.fragments.DetailFragment
+import com.example.allegrointernapp.fragments.ShopFragment
 import com.example.allegrointernapp.viewmodels.ShopViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,10 +26,21 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val fm = supportFragmentManager
+        val shopFragment = ShopFragment()
+        val detailFragment = DetailFragment()
 
         shopViewModel = ViewModelProvider(this)[(ShopViewModel(application)::class.java)]
 
+        if(savedInstanceState == null){
+            fm.beginTransaction().apply {
+                add(R.id.fragmentContainer, shopFragment, "ShopFragment")
+                commit()
+            }
 
+        }
+
+    /*
         val snackbar =  Snackbar.make(
             swipeRefreshLayout,
             "No connectivity available. Turn on internet",
@@ -52,13 +65,7 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
                 }
             })
 
-        /**
-         * Swipe to refresh data and set refreshing icon till completed network request
-         */
-        swipeRefreshLayout.setOnRefreshListener {
-            shopViewModel.refreshData()
-        }
-
+     */
     }
 
     /**

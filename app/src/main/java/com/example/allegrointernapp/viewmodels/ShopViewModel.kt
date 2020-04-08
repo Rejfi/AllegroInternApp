@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.emptyFlow
 class ShopViewModel(app: Application): AndroidViewModel(app){
    // private val repository = ShopRepository(app)
     private val allOffersLiveData = MutableLiveData<List<Offer>>()
+    private val selectedOffer = MutableLiveData<Offer>()
 
     init {
         setOffers()
@@ -25,6 +26,15 @@ class ShopViewModel(app: Application): AndroidViewModel(app){
     fun getAllOffersLiveData(): LiveData<List<Offer>> {
         return allOffersLiveData
     }
+
+    fun setSelectedOffer(offer: Offer){
+        selectedOffer.postValue(offer)
+    }
+
+    fun getSelectedOffer(): LiveData<Offer>{
+        return selectedOffer
+    }
+
 
     private fun setOffers() = CoroutineScope(viewModelScope.coroutineContext).launch{
             // val offers = repository.getAllOffersAsync().await().offers
