@@ -1,21 +1,18 @@
 package com.example.allegrointernapp.viewmodels
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.allegrointernapp.data.Offer
-import com.example.allegrointernapp.data.ShopRepository
-import com.example.allegrointernapp.data.Offers
+import com.example.allegrointernapp.data.data_model.Offer
 import com.example.allegrointernapp.interfaces.ApiAllegro
 import com.example.allegrointernapp.internal.exceptions.NoConnectivityException
 import com.example.allegrointernapp.network.ConnectivityInterceptorImpl
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.emptyFlow
 
+/**
+ * ViewModel exposes data to Fragments
+ */
 class ShopViewModel(app: Application): AndroidViewModel(app){
-   // private val repository = ShopRepository(app)
     private val allOffersLiveData = MutableLiveData<List<Offer>>()
     private val selectedOffer = MutableLiveData<Offer>()
 
@@ -35,9 +32,12 @@ class ShopViewModel(app: Application): AndroidViewModel(app){
         return selectedOffer
     }
 
-
+    /**
+     * Function make asynchronous request via interface ApiAllegro,
+     * If data exists filter and set them in LiveData @see allOffersLiveData
+     * Otherwise set empty list
+     */
     private fun setOffers() = CoroutineScope(viewModelScope.coroutineContext).launch{
-            // val offers = repository.getAllOffersAsync().await().offers
             val api = ApiAllegro(ConnectivityInterceptorImpl(getApplication()))
             val offers = try {
                 api.getAllOffersAsync().await().offers

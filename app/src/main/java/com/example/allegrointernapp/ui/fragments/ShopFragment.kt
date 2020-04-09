@@ -1,4 +1,4 @@
-package com.example.allegrointernapp.fragments
+package com.example.allegrointernapp.ui.fragments
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.allegrointernapp.R
 import com.example.allegrointernapp.adapters.OffersAdapter
-import com.example.allegrointernapp.data.Offer
+import com.example.allegrointernapp.data.data_model.Offer
 import com.example.allegrointernapp.viewmodels.ShopViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_shop.*
@@ -88,10 +88,9 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         val searchView = item.actionView as SearchView
 
+        //Check user input, after every change update recyclerView with matched results
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
+            override fun onQueryTextSubmit(query: String): Boolean { return false }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 val listOfMatches = ArrayList<Offer>()
@@ -114,7 +113,8 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
                    shopViewModel.setSelectedOffer(offer)
                }
            }
-        val detailFragment = DetailFragment()
+        val detailFragment =
+            DetailFragment()
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, detailFragment, "DetailFragment")
             addToBackStack(null)

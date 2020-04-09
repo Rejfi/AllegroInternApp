@@ -1,4 +1,4 @@
-package com.example.allegrointernapp.data
+package com.example.allegrointernapp.data.data_model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

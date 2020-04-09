@@ -6,6 +6,10 @@ import com.example.allegrointernapp.internal.exceptions.NoConnectivityException
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * Interceptor which check internet connection and throws exception
+ * @throws NoConnectivityException when internet is not available
+ */
 class ConnectivityInterceptorImpl(context: Context) : ConnectivityInterceptor {
 
     private val appContext = context.applicationContext

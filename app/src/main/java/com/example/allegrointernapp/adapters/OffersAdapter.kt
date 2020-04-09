@@ -1,6 +1,5 @@
 package com.example.allegrointernapp.adapters
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.allegrointernapp.R
-import com.example.allegrointernapp.data.Offer
-import com.example.allegrointernapp.data.Offers
+import com.example.allegrointernapp.data.data_model.Offer
 import com.squareup.picasso.Picasso
 
 class OffersAdapter(private val allOffers: List<Offer>,

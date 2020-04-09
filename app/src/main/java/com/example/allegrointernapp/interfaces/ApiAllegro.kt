@@ -1,8 +1,7 @@
 package com.example.allegrointernapp.interfaces
 
-import com.example.allegrointernapp.data.Offers
+import com.example.allegrointernapp.data.data_model.Offers
 import com.example.allegrointernapp.network.ConnectivityInterceptor
-import com.example.allegrointernapp.network.ConnectivityInterceptorImpl
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
@@ -10,6 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
+/**
+* Interface to use network request with Retrofit
+*/
 interface ApiAllegro {
 
     @GET("offers")
@@ -23,6 +25,7 @@ interface ApiAllegro {
                 .addInterceptor(connectivityInterceptor)
                 .build()
 
+            //Prepare Retrofit object
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://private-987cdf-allegromobileinterntest.apiary-mock.com/allegro/")
