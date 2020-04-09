@@ -62,7 +62,6 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/detailContent"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -70,7 +69,6 @@
                       <TextView
                           android:textStyle="bold|italic"
                           android:padding="5dp"
-                          android:id="@+id/detailDescriptionHeaderFrag"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"/>
 
@@ -91,7 +89,6 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatButtonFrag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

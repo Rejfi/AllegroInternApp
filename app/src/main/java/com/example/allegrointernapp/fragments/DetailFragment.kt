@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.allegrointernapp.R
 import com.example.allegrointernapp.viewmodels.ShopViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_shop.*
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +29,6 @@ class DetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         shopViewModel = ViewModelProvider(requireActivity()).get(ShopViewModel(requireActivity().application)::class.java)
@@ -42,8 +40,8 @@ class DetailFragment : Fragment() {
             detailPriceFrag.text = totalPrice
             detailDescriptionFrag.text = it.description
         })
-
     }
+
 
 
     override fun onDestroy() {

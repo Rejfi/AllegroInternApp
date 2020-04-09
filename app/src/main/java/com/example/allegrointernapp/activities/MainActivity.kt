@@ -1,9 +1,14 @@
 package com.example.allegrointernapp.activities
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var shopViewModel: ShopViewModel
 
@@ -28,7 +33,6 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
         setContentView(R.layout.activity_main)
         val fm = supportFragmentManager
         val shopFragment = ShopFragment()
-        val detailFragment = DetailFragment()
 
         shopViewModel = ViewModelProvider(this)[(ShopViewModel(application)::class.java)]
 
@@ -39,44 +43,8 @@ class MainActivity : AppCompatActivity(), OffersAdapter.OnOfferClickListener {
             }
 
         }
-
-    /*
-        val snackbar =  Snackbar.make(
-            swipeRefreshLayout,
-            "No connectivity available. Turn on internet",
-            Snackbar.LENGTH_INDEFINITE)
-                .setAction("Retry") {
-                    shopViewModel.refreshData()
-            }
-
-            val asyncViewModelData = shopViewModel.getAllOffersLiveData()
-
-            asyncViewModelData.observe(this, Observer {
-            if(it.isNullOrEmpty()){
-                snackbar.show()
-                swipeRefreshLayout.isRefreshing = false
-
-            }else {
-                recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-                val adapter = OffersAdapter(it, this)
-                recyclerView.adapter = adapter
-                swipeRefreshLayout.isRefreshing = false
-                snackbar.dismiss()
-                }
-            })
-
-     */
     }
 
-    /**
-     * Open DetailActivity and send offer data via Intent.putParcelable
-     */
-    override fun onItemClick(position: Int) {
-        val offer = shopViewModel.getAllOffersLiveData().value!![position]
-        val intent = Intent(applicationContext, DetailActivity::class.java)
-        intent.putExtra("offerDetails", offer)
-        startActivity(intent)
-    }
 
 
 }

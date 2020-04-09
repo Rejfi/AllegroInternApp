@@ -4,19 +4,19 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.example.allegrointernapp.R
 import com.example.allegrointernapp.adapters.OffersAdapter
+import com.example.allegrointernapp.data.Offer
 import com.example.allegrointernapp.viewmodels.ShopViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_shop.*
+
 
 class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
 
@@ -27,15 +27,16 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
         savedInstanceState: Bundle?
     ): View? {
 
+
         return inflater.inflate(R.layout.fragment_shop, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
 
        shopViewModel = ViewModelProvider(requireActivity()).get(ShopViewModel(requireActivity().application)::class.java)
         Log.e("ViewModel", shopViewModel.hashCode().toString() + ":ShopFragment")
-
 
         val noInternetSbar = Snackbar.make(
             swipeLayoutFrag,
@@ -78,23 +79,47 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
         }
     }
 
-    override fun onItemClick(position: Int) {
-        val offer = shopViewModel.getAllOffersLiveData().value!![position]
-        shopViewModel.setSelectedOffer(offer)
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.menu_shop, menu)
+        val item = menu.findItem(R.id.search)
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        val searchView = item.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                val listOfMatches = ArrayList<Offer>()
+                shopViewModel.getAllOffersLiveData().value?.forEach {
+                    if(it.name.contains(newText, true)){
+                        listOfMatches.add(it)
+                    }
+                }
+                val list = listOfMatches.toList()
+                recyclerViewFrag.adapter = OffersAdapter(list, this@ShopFragment)
+                return true
+            }
+        })
+    }
+
+    override fun onItemClick(position: Int, id: String) {
+        val offers = shopViewModel.getAllOffersLiveData().value!!
+        for(offer in offers){
+               if(offer.id == id){
+                   shopViewModel.setSelectedOffer(offer)
+               }
+           }
         val detailFragment = DetailFragment()
         requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, detailFragment, "DetailFragment")
             addToBackStack(null)
             commit()
         }
-
-
-        /*
-        TODO("Przerobić aplikacje na fragmenty")
-        TODO("Zdecydować kto będzie nasłuchiwał na kliknięcie")
-        TODO("Przygotować layout dla fragmentów")
-
-         */
     }
 
     private fun isOnline(): Boolean{

@@ -12,4 +12,5 @@ tools:context=".fragments.ShopFragment">
     android:id="@+id/recyclerViewFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

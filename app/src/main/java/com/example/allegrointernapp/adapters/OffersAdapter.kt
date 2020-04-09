@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 
 class OffersAdapter(private val allOffers: List<Offer>,
                     private val onOfferClickListener: OnOfferClickListener
-): RecyclerView.Adapter<OffersViewHolder>() {
+): RecyclerView.Adapter<OffersAdapter.OffersViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OffersViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -27,38 +27,42 @@ class OffersAdapter(private val allOffers: List<Offer>,
         return allOffers.size
     }
 
-    override fun onBindViewHolder(holder: OffersViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: OffersAdapter.OffersViewHolder, position: Int) {
 
         holder.img.contentDescription = allOffers[position].thumbnailUrl
         holder.title.text = allOffers[position].name
-        holder.price.text = allOffers[position].price.amount
+        val price = "${allOffers[position].price.amount} ${allOffers[position].price.currency}"
+        holder.price.text = price
 
-        Picasso.get().load(allOffers[position].thumbnailUrl)
+        Picasso.get()
+            .load(allOffers[position].thumbnailUrl)
             .resize(300,300)
             .centerInside()
             .into(holder.img)
     }
 
     interface OnOfferClickListener{
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, id: String)
     }
 
+
+   inner class OffersViewHolder(view: View,
+                           private val onOfferClickListener: OnOfferClickListener
+    ): RecyclerView.ViewHolder(view), View.OnClickListener {
+
+        val img: ImageView = view.findViewById(R.id.offerImage)
+        val title: TextView = view.findViewById(R.id.offerTitle)
+        val price: TextView = view.findViewById(R.id.offerPrice)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            onOfferClickListener.onItemClick(adapterPosition, allOffers[adapterPosition].id)
+        }
+    }
 }
 
-class OffersViewHolder(view: View,
-                       private val onOfferClickListener: OffersAdapter.OnOfferClickListener
-): RecyclerView.ViewHolder(view), View.OnClickListener {
 
-    val img: ImageView = view.findViewById(R.id.offerImage)
-    val title: TextView = view.findViewById(R.id.offerTitle)
-    val price: TextView = view.findViewById(R.id.offerPrice)
-
-    init {
-        itemView.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        onOfferClickListener.onItemClick(adapterPosition)
-    }
-}
 
