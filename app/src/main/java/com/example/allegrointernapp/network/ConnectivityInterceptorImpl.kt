@@ -15,13 +15,15 @@ class ConnectivityInterceptorImpl(context: Context) : ConnectivityInterceptor {
     private val appContext = context.applicationContext
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        if(!isOnline()) throw NoConnectivityException()
+        if(!NetworkChecker.isOnline(appContext)) throw NoConnectivityException()
         return chain.proceed(chain.request())
     }
-
+/*
     private fun isOnline(): Boolean{
         val cm = appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
         return netInfo != null && netInfo.isConnected
     }
+
+ */
 }
