@@ -11,6 +11,11 @@ import java.lang.Exception
 
 class ShopRepository(app: Application) {
     private val api = ApiAllegro(ConnectivityInterceptorImpl(app))
+
+    /**
+     * Get Offers.
+     * If it throws any exception return null and later handle it
+     */
     fun getOffersAsync(): Deferred<Offers>?{
         return try {
             api.getAllOffersAsync()

@@ -44,7 +44,10 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
             "No data to show",
             Snackbar.LENGTH_INDEFINITE)
             .setAction("Retry") {
-                if(NetworkChecker.isOnline(requireContext())) shopViewModel.refreshData()
+                if(NetworkChecker.isOnline(requireContext())) {
+                    shopViewModel.refreshData()
+                    swipeLayoutFrag.isRefreshing = true
+                }
                 else noInternetSnackbar.show()
             }
 
