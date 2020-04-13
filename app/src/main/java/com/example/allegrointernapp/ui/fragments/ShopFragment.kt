@@ -1,9 +1,6 @@
 package com.example.allegrointernapp.ui.fragments
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -27,14 +24,17 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
         return inflater.inflate(R.layout.fragment_shop, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
 
        shopViewModel = ViewModelProvider(requireActivity()).get(ShopViewModel(requireActivity().application)::class.java)
-        Log.e("ViewModel", shopViewModel.hashCode().toString() + ":ShopFragment")
 
-        val noInternetSbar = Snackbar.make(
+        val noInternetSnackbar = Snackbar.make(
             swipeLayoutFrag,
             "Check your internet connection and pull to refresh",
             Snackbar.LENGTH_INDEFINITE)
@@ -45,7 +45,7 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
             Snackbar.LENGTH_INDEFINITE)
             .setAction("Retry") {
                 if(NetworkChecker.isOnline(requireContext())) shopViewModel.refreshData()
-                else noInternetSbar.show()
+                else noInternetSnackbar.show()
             }
 
 
@@ -69,7 +69,7 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
         swipeLayoutFrag.setOnRefreshListener {
             if(NetworkChecker.isOnline(requireContext())) {
                 shopViewModel.refreshData()
-                noInternetSbar.dismiss()
+                noInternetSnackbar.dismiss()
             }
             else {
                 swipeLayoutFrag.isRefreshing = false
@@ -83,7 +83,7 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_shop, menu)
         val item = menu.findItem(R.id.search)
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         val searchView = item.actionView as SearchView
         searchView.queryHint = "What do you wish?"
 
@@ -116,6 +116,7 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
                 return true
             }
         })
+
     }
 
     /**
