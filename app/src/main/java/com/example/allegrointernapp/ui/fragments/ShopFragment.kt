@@ -59,8 +59,11 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
 
                 }else {
                     recyclerViewFrag.layoutManager = LinearLayoutManager(requireContext())
+                   /*
                     val adapter = OffersAdapter(it, this)
                     recyclerViewFrag.adapter = adapter
+                    */
+                    updateRecyclerView(it, this)
                     swipeLayoutFrag.isRefreshing = false
                     noDataSnackbar.dismiss()
                 }
@@ -139,4 +142,11 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
             commit()
         }
     }
+
+    private fun updateRecyclerView(listOffers: List<Offer>, onOfferClickListener: OffersAdapter.OnOfferClickListener){
+        val adapter = OffersAdapter(listOffers, onOfferClickListener)
+        recyclerViewFrag.adapter = adapter
+    }
+
+
 }

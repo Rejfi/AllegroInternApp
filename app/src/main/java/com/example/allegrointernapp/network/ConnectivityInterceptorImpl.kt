@@ -18,11 +18,10 @@ class ConnectivityInterceptorImpl(context: Context) : ConnectivityInterceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         //Check if internet connection is available, if not available throw NoConnectivityException
         if(!NetworkChecker.isOnline(appContext)){ throw NoConnectivityException()}
-        val request: Request = chain.request()
 
         //If SocketTimeOutException is thrown, convert to NoConnectivityException and handle it later in app
         try {
-            chain.proceed(request)
+            chain.proceed(chain.request())
         } catch (e: SocketTimeoutException) {
             throw NoConnectivityException()
         }

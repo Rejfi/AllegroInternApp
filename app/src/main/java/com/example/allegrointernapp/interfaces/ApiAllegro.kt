@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit
 */
 interface ApiAllegro {
 
-    @Throws(SocketTimeoutException::class)
     @GET("offers")
     fun getAllOffersAsync(): Deferred<Offers>
 
@@ -28,8 +27,8 @@ interface ApiAllegro {
         operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): ApiAllegro {
 
             val okHttpClient = OkHttpClient.Builder()
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(60,TimeUnit.SECONDS) //Set higher then default readTimeout because photos on server are in high resolution
                 .protocols(listOf(Protocol.HTTP_1_1))
                 .addInterceptor(connectivityInterceptor)
                 .build()
@@ -38,7 +37,7 @@ interface ApiAllegro {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://private-987cdf-allegromobileinterntest.apiary-mock.com/allegro/")
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory()) //
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiAllegro::class.java)
