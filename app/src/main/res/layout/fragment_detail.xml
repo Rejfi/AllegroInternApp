@@ -30,7 +30,7 @@
 
                 <ImageView
                     android:src="@mipmap/ic_non_photo"
-                    android:contentDescription="Offer Image Not Available"
+                    android:contentDescription="@string/noImage"
                     android:minHeight="300dp"
                     android:minWidth="300dp"
                     android:maxHeight="1000dp"
@@ -48,7 +48,7 @@
 
                 <TextView
                     android:padding="5dp"
-                    android:hint="Cena"
+                    android:hint="@string/price"
                     android:textStyle="bold"
                     android:textSize="25sp"
                     android:id="@+id/detailPriceFrag"
@@ -73,7 +73,7 @@
                           android:layout_height="wrap_content"/>
 
                       <TextView
-                          android:hint="Opis"
+                          android:hint="@string/desc"
                           android:padding="5dp"
                           android:textSize="18sp"
                           android:id="@+id/detailDescriptionFrag"

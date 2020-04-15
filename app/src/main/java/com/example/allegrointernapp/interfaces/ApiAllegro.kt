@@ -4,31 +4,26 @@ import com.example.allegrointernapp.data.data_model.Offers
 import com.example.allegrointernapp.network.ConnectivityInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
-import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.HTTP
-import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
 /**
-* Interface to use network request with Retrofit
+* Interface to use network request with Retrofit2
 */
 interface ApiAllegro {
-
     @GET("offers")
-    fun getAllOffersAsync(): Deferred<Offers>
+    fun getAllOffersAsync(): Deferred<Offers> //Use Deferred because Retrofit since ver.2.6.0 allows correlating with Kotlin Coroutines
 
     companion object{
         //Override invoke method to call Api short way
         operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): ApiAllegro {
 
             val okHttpClient = OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(60,TimeUnit.SECONDS) //Set higher then default readTimeout because photos on server are in high resolution
+                .readTimeout(30,TimeUnit.SECONDS) //Set higher then default readTimeout because photos on server are in high resolution
                 .protocols(listOf(Protocol.HTTP_1_1))
                 .addInterceptor(connectivityInterceptor)
                 .build()

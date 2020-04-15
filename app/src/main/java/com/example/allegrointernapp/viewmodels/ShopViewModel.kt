@@ -42,12 +42,10 @@ class ShopViewModel(app: Application): AndroidViewModel(app){
      */
     private fun setOffers() = CoroutineScope(viewModelScope.coroutineContext).launch{
         val repo = ShopRepository(getApplication())
-      //  val api = ApiAllegro(ConnectivityInterceptorImpl(getApplication()))
             val offers = try {
                repo.getOffersAsync()?.await()?.offers
-                // api.getAllOffersAsync().await().offers
             }catch (e: NoConnectivityException){
-                Log.e("Connectivity", e.message, e)
+                Log.d("Connectivity", e.message, e)
                 emptyList<Offer>()
             }
 

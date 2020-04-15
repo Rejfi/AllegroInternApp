@@ -51,7 +51,7 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
                 else noInternetSnackbar.show()
             }
 
-
+        swipeLayoutFrag.isRefreshing = true
         shopViewModel.getAllOffersLiveData().observe(viewLifecycleOwner, Observer {
                 if(it.isNullOrEmpty()){
                     swipeLayoutFrag.isRefreshing = false
@@ -59,10 +59,6 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
 
                 }else {
                     recyclerViewFrag.layoutManager = LinearLayoutManager(requireContext())
-                   /*
-                    val adapter = OffersAdapter(it, this)
-                    recyclerViewFrag.adapter = adapter
-                    */
                     updateRecyclerView(it, this)
                     swipeLayoutFrag.isRefreshing = false
                     noDataSnackbar.dismiss()
@@ -106,7 +102,6 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
                 }
                 val list = listOfMatches.toList().sortedBy { it.price.amount.toDouble() }
                 recyclerViewFrag.adapter = OffersAdapter(list, this@ShopFragment)
-                //searchView.clearFocus()
                 return false
             }
 
@@ -119,7 +114,7 @@ class ShopFragment : Fragment(), OffersAdapter.OnOfferClickListener{
                 }
                 val list = listOfMatches.toList().sortedBy { it.price.amount.toDouble() }
                 recyclerViewFrag.adapter = OffersAdapter(list, this@ShopFragment)
-                return true
+                return false
             }
         })
 

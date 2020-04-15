@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Sklep Allegro</string>
+    <string name="price">Price</string>
+    <string name="desc">Description</string>
+    <string name="noImage">Offer Image Not Available</string>
+    <string name="offerImg">Offer image</string>
+    <string name="title">Title</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

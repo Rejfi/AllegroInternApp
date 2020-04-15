@@ -13,7 +13,7 @@ class ShopRepository(app: Application) {
     private val api = ApiAllegro(ConnectivityInterceptorImpl(app))
 
     /**
-     * Get Offers.
+     * Get offers using Retrofit interface.
      * If it throws any exception return null and later handle it
      */
     fun getOffersAsync(): Deferred<Offers>?{

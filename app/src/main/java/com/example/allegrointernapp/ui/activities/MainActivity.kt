@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.lifecycle.ViewModelProvider
 import com.example.allegrointernapp.R
 import com.example.allegrointernapp.ui.fragments.ShopFragment
@@ -30,10 +29,8 @@ class MainActivity : AppCompatActivity() {
                 add(R.id.fragmentContainer, shopFragment, "ShopFragment")
                 commit()
             }
-
         }
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -42,11 +39,5 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-
-    override fun onBackPressed() {
-        Log.d("onBackPressed", "onBackPressed method call")
-        super.onBackPressed()
     }
 }
